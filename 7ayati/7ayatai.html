@@ -44,6 +44,7 @@
 
 <script>
 var output = '';
+var formType='';
 var form = {
 	
 	"title" : "تسجيل الدخول",
@@ -71,20 +72,20 @@ var form = {
 		
 		output += "<h1 style=\"text-align:center; color: #4CAF50;\">"+form.title+"</h1>";
 		output += "<h6 style=\"text-align:center; color: #4CAF50;\">"+form.description+"</h6>";
-		var formType = form.type;
+		formType = form.type;
 		for(let i=0;i<fields.length;i++) {
 			
-			declare(i,fields[i].type,fields[i].label,fields[i],null);
+			declare(i,fields[i].type,fields[i].label,fields[i],null,formType);
 			
 		}
 		jQuery("#content").html(output);
 	
 	});
-	function declare(id , type , label , source, groub){
+	function declare(id , type , label , source, groub,formType){
 		if(type=='section'){
 			output += "<div><h3 style=\"text-align:center; color: #4CAF50;\">"+source.label+"</h3></div>";
 			for(let j=0;j<source.fields.length;j++) {
-			declare(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],null);
+			declare(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],null,formType);
 			
 		}
 		
@@ -92,7 +93,7 @@ var form = {
 		
 			output +="<div style=\"text-align:right\">" +  "<h5 style=\"text-align:right; color: #4CAF50;\">"+source.label+"</h5>";
 			for(let j=0;j<source.fields.length;j++) {
-			declare(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],source.label);
+			declare(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],source.label,formType);
 			
 		}
 			output +="</div>";
@@ -100,9 +101,10 @@ var form = {
 			output += "<h6 style=\"text-align:right; color: #4CAF50;\">"+source.label+"</h6>"+
 			"<textarea class=\"form-control\" aria-label=\"With textarea\" style=\"text-align:center\"></textarea>";
 		}else if (type=='button'){
-		
-		if(formType="login");
-			output += "<div  style=\"text-align:center\"><button type=\"button\" class=\"btn btn-outline-success\" style=\"text-align:center\" id="+id+" onclick=\"read('form.json')\">"+label+"</button></div>";
+		let method = "";
+			if(formType=="login") method="login()";
+			if(formType=="dataForm") method="post()";
+			output += "<div  style=\"text-align:center\"><button type=\"button\" class=\"btn btn-outline-success\" style=\"text-align:center\" id="+id+" onclick=\""+method+"\">"+label+"</button></div>";
 		}else{
 			let divType="";
 			let inputType ="";
@@ -120,6 +122,44 @@ var form = {
 			
 		}
 	}
+	function receive(id , type , label , source, groub,massage){
+	
+		if(type=='section'){
+			
+			for(let j=0;j<source.fields.length;j++) {
+			receive(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],null);
+			
+		}
+		
+		}else if (type=='groub'){
+		
+			massage += "{\""+label+"\":\"";
+			for(let j=0;j<source.fields.length;j++) {
+			receive(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],source.label);
+			
+		}
+			
+		}else if (type=='textarea'){
+			massage += "{\""+source.label+":"+document.getElementById(id).value+"\"},";
+			
+		}else if (type=='button'){
+		
+		}else if (type=='text' || type=='number'){
+			massage += "{\""+source.label+":"+document.getElementById(id).value+"\"},";
+			
+		}else if (type=='checkbox'){
+			massage += "{\""+source.label+":"+document.getElementById(id).checked+"\"},";
+			
+		}else if (type=='checkbox'){
+			massage += "{\""+source.label+":"+document.getElementById(id).checked+"\"},";
+			
+		}else if (type =='radio'){
+			if(document.getElementById(id).checked){
+				massage += source.label+"\"},";
+			}
+		}
+		
+	}
 	function read(json){
 		
 		var xhttp = new XMLHttpRequest();
@@ -130,12 +170,13 @@ var form = {
 				
 				output="";
 				fields = form.fields;
+				formType = form.type;
 				output += "<h1 style=\"text-align:center; color: #4CAF50;\">"+form.title+"</h1>";
 				output += "<h6 style=\"text-align:center; color: #4CAF50;\">"+form.description+"</h6>";
 				
 				for(let i=0;i<fields.length;i++) {
 					
-					declare(i,fields[i].type,fields[i].label,fields[i],null);
+					declare(i,fields[i].type,fields[i].label,fields[i],null,formType);
 			
 				}
 		jQuery("#content").html(output);
@@ -143,6 +184,47 @@ var form = {
 		};
 		xhttp.open("GET", json, true);
 		xhttp.send();
+	}
+	function login(data){
+		var massage ="";
+		massage+= "{[";
+		for(let i=0;i<fields.length;i++) {
+			
+			receive(i,fields[i].type,fields[i].label,fields[i],null,massage);
+			
+		}
+			massage+= "{}]}";
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let respond = JSON.parse(this.responseText);
+				read("form.json");
+			}
+		};
+		
+		//xhttp.open("POST", "user.json", true);
+		//xhttp.send(data);
+	}
+	function post(data){
+	console.log("post");
+		var massage ="";
+		massage+= "{[";
+		for(let i=0;i<fields.length;i++) {
+			
+			receive(i,fields[i].type,fields[i].label,fields[i],null,massage);
+			
+		}
+			massage+= "{}]}";
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let respond = JSON.parse(this.responseText);
+				output+="<div class=\"alert alert-success\" role=\"alert\">تم الإرسال بنجاح!</div>";
+				jQuery("#content").html(output);
+			}
+		};
+		xhttp.open("POST", "data.json", true);
+		xhttp.send(massage);
 	}
 	
 	
