@@ -1,0 +1,21 @@
+{
+	
+	"title" : "تسجيل الدخول",
+	"description" : "أدخل اسم المستخدم وكلمة المرور",
+	"type":"login",
+	"fields" : [
+		{	
+			"type" : "text" ,
+			"label" : "اسم المستخدم"
+			
+		},{	
+			"type" : "password" ,
+			"label" : "كلمة المرور  "
+			
+		},{	
+			"type" : "button" ,
+			"label" : "تسجيل الدخول "
+			
+		}
+	]
+}

@@ -1,0 +1,199 @@
+{
+
+    "title": "استمارة الانجازات اليومية",
+    "description": "يرجى ملئ كافة البيانات",
+	"type":"dataForm",
+    "fields": [
+        {
+
+            "type": "section",
+            "label": "الفرائض",
+            "authority":"student",
+            "fields": [
+                {
+                    "type": "groub",
+                    "label": "فرض الفجر",
+                    "fields": [
+                        {
+                            "type": "radio",
+                            "label": "في جماعة"
+                        }, {
+                            "type": "radio",
+                            "label": "مفرد"
+                        }, {
+                            "type": "radio",
+                            "label": "قضاء"
+                        }, {
+                            "type": "radio",
+                            "label": "لم أصل"
+                        }
+                    ]
+                }, {
+                    "type": "groub",
+                    "label": "فرض الظهر",
+                    "fields": [
+                        {
+                            "type": "radio",
+                            "label": "في جماعة"
+                        }, {
+                            "type": "radio",
+                            "label": "مفرد"
+                        }, {
+                            "type": "radio",
+                            "label": "قضاء"
+                        }, {
+                            "type": "radio",
+                            "label": "لم أصل"
+                        }
+                    ]
+                }, {
+                    "type": "groub",
+                    "label": "فرض العصر",
+                    "fields": [
+                        {
+                            "type": "radio",
+                            "label": "في جماعة"
+                        }, {
+                            "type": "radio",
+                            "label": "مفرد"
+                        }, {
+                            "type": "radio",
+                            "label": "قضاء"
+                        }, {
+                            "type": "radio",
+                            "label": "لم أصل"
+                        }
+                    ]
+                }, {
+                    "type": "groub",
+                    "label": "فرض المغرب",
+                    "fields": [
+                        {
+                            "type": "radio",
+                            "label": "في جماعة"
+                        }, {
+                            "type": "radio",
+                            "label": "مفرد"
+                        }, {
+                            "type": "radio",
+                            "label": "قضاء"
+                        }, {
+                            "type": "radio",
+                            "label": "لم أصل"
+                        }
+                    ]
+                }, {
+                    "type": "groub",
+                    "label": "فرض العشاء",
+                    "fields": [
+                        {
+                            "type": "radio",
+                            "label": "في جماعة"
+                        }, {
+                            "type": "radio",
+                            "label": "مفرد"
+                        }, {
+                            "type": "radio",
+                            "label": "قضاء"
+                        }, {
+                            "type": "radio",
+                            "label": "لم أصل"
+                        }
+                    ]
+                }
+
+            ]
+        },
+        {
+
+            "type": "section",
+            "label": "السنن",
+            "authority":"student",
+            "fields": [
+                {
+                    "type": "checkbox",
+                    "label": "سنة الفجر"
+                }, {
+                    "type": "groub",
+                    "label": "سنة الظهر",
+                    "fields": [
+                        {
+                            "type": "radio",
+                            "label": "ست ركعات"
+                        }, {
+                            "type": "radio",
+                            "label": "أربع ركعات"
+                        }, {
+                            "type": "radio",
+                            "label": "ركعتان"
+                        }, {
+                            "type": "radio",
+                            "label": "لم أصل"
+                        }
+                    ]
+                }, {
+                    "type": "checkbox",
+                    "label": "سنة العصر"
+                }, {
+                    "type": "checkbox",
+                    "label": "سنة المغرب"
+                }, {
+                    "type": "checkbox",
+                    "label": "سنة العشاء"
+                }, {
+                    "type": "checkbox",
+                    "label": "سنة الوتر"
+                }, {
+                    "type": "number",
+                    "label": "قيام الليل"
+                }
+
+            ]
+        },
+        {
+            "type": "section",
+            "label": "الأنشطة الخارجية",
+            "authority":"student",
+            "fields": [
+                {
+                    "type": "textarea",
+                    "label": "الهوايات والأنشطة اليومية"
+                }, {
+                    "type": "number",
+                    "label": "عدد ساعات ممارسة الأنشطة"
+                }, {
+                    "type": "number",
+                    "label": "عدد ساعات الدراسة"
+                }, {
+                    "type": "number",
+                    "label": "عدد الساعات الضائع"
+                }				
+            ]
+        },
+        {
+            "type": "section",
+            "label": "التسميع",
+            "authority":"tutor",
+            "fields": [
+                 {
+                    "type": "number",
+                    "label": "عدد صفحات الواجب التي تم انهاء تسميعها"
+                }, {
+                    "type": "number",
+                    "label": "عدد صفحات الواجب الناقصة"
+                }, {
+                    "type": "number",
+                    "label": "عدد الصفحات الاضافية"
+                },{
+                    "type": "textarea",
+                    "label": "الواجب الجديد"
+                }				
+            ]
+        },
+        {
+            "type": "button",
+            "label": "إرسال"
+        }
+
+    ]
+}

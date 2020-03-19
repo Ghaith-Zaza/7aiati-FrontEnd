@@ -1,0 +1,12 @@
+[
+    {
+       "name":"tutor",
+       "password":"tutor",
+       "authority":"tutor"
+    },
+    {
+       "name":"student",
+       "password":"student",
+       "authority":"student"
+    }
+]

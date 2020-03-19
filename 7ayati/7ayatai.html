@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://raw.githubusercontent.com/MahdiMajidzadeh/bootstrap-v4-rtl/master/dist/css/bootstrap-rtl.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+		
+    <title>7aiati</title>
+  </head>
+  <body class="rtl">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#" style="color: #4CAF50;" >حياتي</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">استمارة <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">احصائيات</a>
+      </li>
+	  <li class="nav-item" >
+        <a class="nav-link" onclick="read('login.json')">خروج</a>
+      </li>
+     
+     
+    </form>
+  </div>
+</nav>
+<div ></div>
+<div class="container" id="content">
+	 
+</div>
+
+<script>
+var output = '';
+var form = {
+	
+	"title" : "تسجيل الدخول",
+	"description" : "أدخل اسم المستخدم وكلمة المرور",
+	"type":"login",
+	"fields" : [
+		{	
+			"type" : "text" ,
+			"label" : "اسم المستخدم",
+			
+		},{	
+			"type" : "password" ,
+			"label" : "كلمة المرور  ",
+			
+		},{	
+			"type" : 'button' ,
+			"label" : "تسجيل الدخول ",
+			
+		}
+	]
+};
+	var fields = form.fields;
+
+	jQuery(document).ready(function() {
+		
+		output += "<h1 style=\"text-align:center; color: #4CAF50;\">"+form.title+"</h1>";
+		output += "<h6 style=\"text-align:center; color: #4CAF50;\">"+form.description+"</h6>";
+		var formType = form.type;
+		for(let i=0;i<fields.length;i++) {
+			
+			declare(i,fields[i].type,fields[i].label,fields[i],null);
+			
+		}
+		jQuery("#content").html(output);
+	
+	});
+	function declare(id , type , label , source, groub){
+		if(type=='section'){
+			output += "<div><h3 style=\"text-align:center; color: #4CAF50;\">"+source.label+"</h3></div>";
+			for(let j=0;j<source.fields.length;j++) {
+			declare(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],null);
+			
+		}
+		
+		}else if (type=='groub'){
+		
+			output +="<div style=\"text-align:right\">" +  "<h5 style=\"text-align:right; color: #4CAF50;\">"+source.label+"</h5>";
+			for(let j=0;j<source.fields.length;j++) {
+			declare(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],source.label);
+			
+		}
+			output +="</div>";
+		}else if (type=='textarea'){
+			output += "<h6 style=\"text-align:right; color: #4CAF50;\">"+source.label+"</h6>"+
+			"<textarea class=\"form-control\" aria-label=\"With textarea\" style=\"text-align:center\"></textarea>";
+		}else if (type=='button'){
+		
+		if(formType="login");
+			output += "<div  style=\"text-align:center\"><button type=\"button\" class=\"btn btn-outline-success\" style=\"text-align:center\" id="+id+" onclick=\"read('form.json')\">"+label+"</button></div>";
+		}else{
+			let divType="";
+			let inputType ="";
+			let labelType ="";
+			if(type=='checkbox'){
+			 divType="custom-control custom-checkbox ";
+			 labelType="class=\"custom-control-label\"";
+			 inputType="class=\"custom-control-input\"";
+			}else if (type=='radio'){
+			divType="custom-control custom-radio custom-control-inline";
+			}
+			output += "<div class=\""+divType+" \" style=\"text-align:right\">" + 
+			"<input type=\"" + type + "\" "+inputType+" id=\"" + id + "\" name=\""+groub+"\">" +
+			"<label "+labelType+" for=\"" + id + "\" ><h6>" + label + "</h6></label>"+"</div>" ;
+			
+		}
+	}
+	function read(json){
+		
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				form = JSON.parse(this.responseText);
+				
+				
+				output="";
+				fields = form.fields;
+				output += "<h1 style=\"text-align:center; color: #4CAF50;\">"+form.title+"</h1>";
+				output += "<h6 style=\"text-align:center; color: #4CAF50;\">"+form.description+"</h6>";
+				
+				for(let i=0;i<fields.length;i++) {
+					
+					declare(i,fields[i].type,fields[i].label,fields[i],null);
+			
+				}
+		jQuery("#content").html(output);
+			}
+		};
+		xhttp.open("GET", json, true);
+		xhttp.send();
+	}
+	
+	
+</script>
+   </body>
+</html>
