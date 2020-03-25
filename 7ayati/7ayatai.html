@@ -23,8 +23,8 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">استمارة <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" onclick="read('form.json')">استمارة جديدة</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">احصائيات</a>
@@ -34,14 +34,14 @@
       </li>
      
      
-    </form>
+    
   </div>
 </nav>
-<div ></div>
+<form>
 <div class="container" id="content">
 	 
 </div>
-
+</form>
 <script>
 var output = '';
 var formType='';
@@ -98,67 +98,102 @@ var form = {
 		}
 			output +="</div>";
 		}else if (type=='textarea'){
-			output += "<h6 style=\"text-align:right; color: #4CAF50;\">"+source.label+"</h6>"+
-			"<textarea class=\"form-control\" aria-label=\"With textarea\" style=\"text-align:center\"></textarea>";
+			output += "<h6 style=\"text-align:right; color: #4CAF50;\" >"+source.label+"</h6>"+
+			"<textarea class=\"form-control\" aria-label=\"With textarea\" style=\"text-align:center\" id=\"" + id + "\"></textarea>";
 		}else if (type=='button'){
 		let method = "";
 			if(formType=="login") method="login()";
 			if(formType=="dataForm") method="post()";
-			output += "<div  style=\"text-align:center\"><button type=\"button\" class=\"btn btn-outline-success\" style=\"text-align:center\" id="+id+" onclick=\""+method+"\">"+label+"</button></div>";
+			output += "<div  style=\"text-align:center\"><button type=\"button\" class=\"btn btn-outline-success\" style=\"text-align:center\" id=\"" + id + "\" onclick=\""+method+"\">"+label+"</button></div>";
+		}else if(type=='text' || type=='number' || type=='date' || type=='password' ){
+			let divType="";
+			let inputType ="";
+			let labelType ="";
+			let auto="";
+			let sizeType ='h6';
+			divType="form-group";
+			inputType="class=\"form-control\"";
+			if (type=='text'){					auto = "autocomplete=\"username\""
+			}else if (type =='password'){
+				auto = "autocomplete=\"current-password\"";
+			}
+			output += "<div class=\""+divType+" \" style=\"text-align:right\">" +"<label "+labelType+" for=\"" + id + "\" ><"+sizeType+">" + label + "</"+sizeType+"></label>"+ "<input type=\"" + type + "\" "+inputType+" id=\"" + id + "\" name=\""+groub+"\" "+auto+">" +"</div>" ;
+			
+			
+		}else if(type=="list-group"){
+			console.log(formType);
+			if(formType=='namesList'){
+				output+="<div class=\"list-group\">"
+				for(let j=0;j<source.fields.length;j++) {
+					
+					output+="<button type=\"button\" class=\"list-group-item list-group-item-action\" style=\"text-align:center\" onclick=\"read('"+source.fields[j].name+".json')\">"+source.fields[j].name+":"+source.fields[j].score+"</button>"
+				}
+			output+="</div>";
+			}else if(formType=='formsList'){
+				output+="<div class=\"list-group\">"
+				for(let j=0;j<source.fields.length;j++) {
+					
+					output+="<button type=\"button\" class=\"list-group-item list-group-item-action\" style=\"text-align:center\" onclick=\"read('"+source.fields[j].التاريخ+".json')\">"+source.fields[j].التاريخ+":"+source.fields[j].score+ "</button>"
+			}
+			output+="</div>";
+			}
 		}else{
 			let divType="";
 			let inputType ="";
 			let labelType ="";
+			let auto="";
+			let sizeType ='h6';
 			if(type=='checkbox'){
-			 divType="custom-control custom-checkbox ";
-			 labelType="class=\"custom-control-label\"";
-			 inputType="class=\"custom-control-input\"";
+				divType="custom-control custom-checkbox ";
+				labelType="class=\"custom-control-label\"";
+				inputType="class=\"custom-control-input\"";
 			}else if (type=='radio'){
-			divType="custom-control custom-radio custom-control-inline";
+				sizeType='small';
+				divType="custom-control custom-radio custom-control-inline";
 			}
 			output += "<div class=\""+divType+" \" style=\"text-align:right\">" + 
-			"<input type=\"" + type + "\" "+inputType+" id=\"" + id + "\" name=\""+groub+"\">" +
-			"<label "+labelType+" for=\"" + id + "\" ><h6>" + label + "</h6></label>"+"</div>" ;
-			
+			"<input type=\"" + type + "\" "+inputType+" id=\"" + id + "\" name=\""+groub+"\" "+auto+">" +
+			"<label "+labelType+" for=\"" + id + "\" ><"+sizeType+">" + label + "</"+sizeType+"></label>"+"</div>" ;
 		}
 	}
-	function receive(id , type , label , source, groub,massage){
-	
+	function receive(id , type , label , source, groub){
+			var massage="";
 		if(type=='section'){
 			
 			for(let j=0;j<source.fields.length;j++) {
-			receive(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],null);
+			massage+=receive(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],null,massage);
 			
 		}
 		
 		}else if (type=='groub'){
 		
-			massage += "{\""+label+"\":\"";
+			massage += "\""+label+"\":\"";
 			for(let j=0;j<source.fields.length;j++) {
-			receive(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],source.label);
+			massage+=receive(j+label,source.fields[j].type,source.fields[j].label,source.fields[j],source.label,massage);
 			
 		}
 			
 		}else if (type=='textarea'){
-			massage += "{\""+source.label+":"+document.getElementById(id).value+"\"},";
+			massage += "\""+source.label+":"+document.getElementById(id).value+"\",";
 			
 		}else if (type=='button'){
 		
-		}else if (type=='text' || type=='number'){
-			massage += "{\""+source.label+":"+document.getElementById(id).value+"\"},";
+		}else if (type=='text' || type=='number' || type=='password' || type=="date"){
+			
+			massage += "\""+source.label+"\":\""+document.getElementById(id).value+"\",";
 			
 		}else if (type=='checkbox'){
-			massage += "{\""+source.label+":"+document.getElementById(id).checked+"\"},";
+			massage += "\""+source.label+"\":\""+document.getElementById(id).checked+"\",";
 			
 		}else if (type=='checkbox'){
-			massage += "{\""+source.label+":"+document.getElementById(id).checked+"\"},";
+			massage += "\""+source.label+"\":\""+document.getElementById(id).checked+"\",";
 			
 		}else if (type =='radio'){
 			if(document.getElementById(id).checked){
-				massage += source.label+"\"},";
+				massage += source.label+"\",";
 			}
 		}
-		
+		return massage;
 	}
 	function read(json){
 		
@@ -166,14 +201,14 @@ var form = {
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				form = JSON.parse(this.responseText);
-				
+				console.log(form);
 				
 				output="";
 				fields = form.fields;
 				formType = form.type;
 				output += "<h1 style=\"text-align:center; color: #4CAF50;\">"+form.title+"</h1>";
 				output += "<h6 style=\"text-align:center; color: #4CAF50;\">"+form.description+"</h6>";
-				
+				console.log(fields);
 				for(let i=0;i<fields.length;i++) {
 					
 					declare(i,fields[i].type,fields[i].label,fields[i],null,formType);
@@ -187,34 +222,37 @@ var form = {
 	}
 	function login(data){
 		var massage ="";
-		massage+= "{[";
+		massage+= "{";
 		for(let i=0;i<fields.length;i++) {
+			massage+=receive(i,fields[i].type,fields[i].label,fields[i],null,massage);
 			
-			receive(i,fields[i].type,fields[i].label,fields[i],null,massage);
 			
 		}
-			massage+= "{}]}";
+			massage+= "\"\":\"\"}";
+			console.log(massage);
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				let respond = JSON.parse(this.responseText);
+				read("studentsList.json");
 				read("form.json");
 			}
 		};
-		
-		//xhttp.open("POST", "user.json", true);
-		//xhttp.send(data);
+		read("studentsList.json");
+		xhttp.open("POST", "listener.php", true);
+		xhttp.send(data);
 	}
 	function post(data){
-	console.log("post");
+	
 		var massage ="";
-		massage+= "{[";
+		massage+= "{";
 		for(let i=0;i<fields.length;i++) {
 			
-			receive(i,fields[i].type,fields[i].label,fields[i],null,massage);
+			massage+=receive(i,fields[i].type,fields[i].label,fields[i],null,massage);
 			
 		}
-			massage+= "{}]}";
+			massage+= "\"\":\"\"}";
+			console.log(massage);
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -223,8 +261,33 @@ var form = {
 				jQuery("#content").html(output);
 			}
 		};
-		xhttp.open("POST", "data.json", true);
+		xhttp.open("POST", "listener.php", true);
 		xhttp.send(massage);
+	}
+	function view(data){
+		
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				form = JSON.parse(this.responseText);
+				console.log(form);
+				
+				output="";
+				fields = form.fields;
+				formType = form.type;
+				output += "<h1 style=\"text-align:center; color: #4CAF50;\">"+form.title+"</h1>";
+				output += "<h6 style=\"text-align:center; color: #4CAF50;\">"+form.description+"</h6>";
+				console.log(fields);
+				for(let i=0;i<fields.length;i++) {
+					
+					declare(i,fields[i].type,fields[i].label,fields[i],null,formType);
+			
+				}
+		jQuery("#content").html(output);
+			}
+		};
+		xhttp.open("POST", "listener.php", true);
+		xhttp.send(data);
 	}
 	
 	

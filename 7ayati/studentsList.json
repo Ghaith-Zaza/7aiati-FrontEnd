@@ -1,0 +1,73 @@
+
+{
+    "title": "أسماء الطلاب",
+    "type":"namesList",
+    "description": "",
+    "fields": [
+        {
+            "type": "list-group",
+            "fields": [
+                {
+                    "name": "student",
+                    "score": 566
+                }
+                ,
+                {
+                    "name": "student1",
+                    "score": 864
+                }
+                ,
+                {
+                    "name": "student2",
+                    "score": 65
+                }
+                ,
+                {
+                    "name": "student3",
+                    "score": 5986
+                }
+                ,
+                {
+                    "name": "student4",
+                    "score": 789
+                }
+                ,
+                {
+                    "name": "student5",
+                    "score": 987
+                }
+                ,
+                {
+                    "name": "student6",
+                    "score": 995
+                }
+                ,
+                {
+                    "name": "student7",
+                    "score": 6254
+                }
+                ,
+                {
+                    "name": "student8",
+                    "score": 3255
+                }
+                ,
+                {
+                    "name": "student9",
+                    "score": 654
+                }
+                ,
+                {
+                    "name": "student10",
+                    "score": 369
+                }
+                ,
+                {
+                    "name": "student11",
+                    "score": 147
+                }
+
+            ]
+        }
+    ]
+}

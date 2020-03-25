@@ -2,13 +2,17 @@
 
     "title": "استمارة الانجازات اليومية",
     "description": "يرجى ملئ كافة البيانات",
-	"type":"dataForm",
+    "type": "dataForm",
     "fields": [
+        {
+            "type": "date",
+            "label": "التاريخ"
+        },
         {
 
             "type": "section",
             "label": "الفرائض",
-            "authority":"student",
+            "authority": "student",
             "fields": [
                 {
                     "type": "groub",
@@ -108,7 +112,7 @@
 
             "type": "section",
             "label": "السنن",
-            "authority":"student",
+            "authority": "student",
             "fields": [
                 {
                     "type": "checkbox",
@@ -153,12 +157,9 @@
         {
             "type": "section",
             "label": "الأنشطة الخارجية",
-            "authority":"student",
+            "authority": "student",
             "fields": [
                 {
-                    "type": "textarea",
-                    "label": "الهوايات والأنشطة اليومية"
-                }, {
                     "type": "number",
                     "label": "عدد ساعات ممارسة الأنشطة"
                 }, {
@@ -173,9 +174,9 @@
         {
             "type": "section",
             "label": "التسميع",
-            "authority":"tutor",
+            "authority": "tutor",
             "fields": [
-                 {
+                {
                     "type": "number",
                     "label": "عدد صفحات الواجب التي تم انهاء تسميعها"
                 }, {
@@ -184,9 +185,6 @@
                 }, {
                     "type": "number",
                     "label": "عدد الصفحات الاضافية"
-                },{
-                    "type": "textarea",
-                    "label": "الواجب الجديد"
                 }				
             ]
         },
